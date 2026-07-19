@@ -179,7 +179,7 @@ export default function App() {
       <main className="max-w-5xl mx-auto px-4 py-6 space-y-5 pb-20">
         {!visionConfigured && (
           <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl p-3 leading-relaxed">
-            아직 서버에 <code className="bg-white px-1 rounded">GEMINI_API_KEY</code>가 설정되지 않아 이미지 분석이
+            아직 서버에 <code className="bg-white px-1 rounded">OPENAI_API_KEY</code>가 설정되지 않아 이미지 분석이
             작동하지 않아요. README의 "환경변수 설정"을 참고해 키를 넣고 서버를 재시작해 주세요.
           </div>
         )}

@@ -32,7 +32,7 @@ function decodeEntities(s: string): string {
 }
 
 // Pinterest thumbnails come through as 236x; bump to a mid size that's big
-// enough for reliable Gemini vision analysis without downloading originals.
+// enough for reliable vision analysis without downloading originals.
 function upscaleImage(url: string): string {
   return url.replace(/\/(236x|474x|564x)\//, "/736x/");
 }
