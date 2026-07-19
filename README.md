@@ -14,6 +14,20 @@ npm run dev
 
 `http://localhost:3002` 접속.
 
+## Vercel 배포
+
+이 저장소는 Vercel에 바로 배포할 수 있게 구성되어 있습니다 (`vercel.json` +
+`api/index.ts`). Vercel 대시보드에서 이 깃허브 저장소를 "New Project"로
+가져오면 프레임워크가 자동 감지되고, **Settings → Environment Variables**에
+`.env`에 있는 값들(`OPENAI_API_KEY`, `OPENAI_MODEL`, `NAVER_CLIENT_ID`,
+`NAVER_CLIENT_SECRET`, `SERPAPI_KEY`, `SESSION_SECRET`, `NODE_ENV=production`)을
+그대로 입력하면 됩니다.
+
+> ⚠️ **참고**: Vercel은 서버가 계속 켜져 있는 방식이 아니라 요청마다 함수를
+> 실행하는 "서버리스" 방식입니다. `/api/analyze`처럼 OpenAI·네이버·구글 렌즈를
+> 한꺼번에 호출하는 요청은 몇 초~20초 정도 걸릴 수 있어서, 아주 드물게
+> 시간제한에 걸릴 수 있습니다 (`vercel.json`에서 60초로 넉넉히 설정해뒀습니다).
+
 ## 환경변수 설정
 
 ### OpenAI API 키 (이미지 분석 — 이거 하나만 있으면 됩니다)
