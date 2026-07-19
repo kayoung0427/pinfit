@@ -238,6 +238,7 @@ app.post("/api/analyze", async (req, res) => {
     });
   } catch (err: any) {
     console.error("[analyze] failed:", err);
-    res.status(500).json({ error: err.message || "분석 중 오류가 발생했습니다." });
+    // TEMP DEBUG: include stack to locate a Vercel-only ByteString bug — remove once fixed.
+    res.status(500).json({ error: err.message || "분석 중 오류가 발생했습니다.", stack: err.stack });
   }
 });
