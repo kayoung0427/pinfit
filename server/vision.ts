@@ -4,15 +4,28 @@ import OpenAI from "openai";
 // before dotenv.config() runs in index.ts (import statements execute first).
 let client: OpenAI | null | undefined;
 
+// A valid OpenAI key is plain ASCII (letters/digits/-/_). If someone
+// accidentally pastes a masked display value (e.g. the "••••" a password-style
+// UI shows) instead of the real key, the SDK fails deep inside an HTTP header
+// builder with a cryptic "ByteString" error. Catch that upfront instead.
+function isPlausibleApiKey(key: string): boolean {
+  return /^[\x20-\x7e]+$/.test(key);
+}
+
 function getClient(): OpenAI | null {
   if (client === undefined) {
+    const key = process.env.OPENAI_API_KEY;
+    if (key && !isPlausibleApiKey(key)) {
+      console.error(
+        "[vision] OPENAI_API_KEY contains non-ASCII characters — this usually means a masked/placeholder " +
+          "value (like the dots a password field shows) got pasted instead of the real key. Re-copy it from the source."
+      );
+    }
     // maxRetries: 0 — we run our own bounded retry (createWithRateLimitRetry)
     // for per-minute limits. The SDK's default auto-retry can silently sleep
     // for a long time honoring a huge Retry-After (e.g. a daily-limit reset
     // dozens of minutes out), which looks like the request just hung.
-    client = process.env.OPENAI_API_KEY
-      ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 0, timeout: 30_000 })
-      : null;
+    client = key && isPlausibleApiKey(key) ? new OpenAI({ apiKey: key, maxRetries: 0, timeout: 30_000 }) : null;
   }
   return client;
 }
